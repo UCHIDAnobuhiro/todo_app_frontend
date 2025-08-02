@@ -1,5 +1,6 @@
 package com.example.todoapp.data.repository
 
+import android.util.Log
 import com.example.todoapp.data.model.Todo
 import com.example.todoapp.data.network.ApiClient
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +29,17 @@ class TodoRepository {
             _todos.value = api.getTodos()
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    suspend fun updateTodo(todo: Todo) {
+        try {
+            api.updateTodo(todo.id, todo)
+            val updatedTodos = api.getTodos()
+            _todos.value = updatedTodos
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("error", "error: $e")
         }
     }
 
