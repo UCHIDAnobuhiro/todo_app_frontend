@@ -23,7 +23,6 @@ class TodoViewModel : ViewModel() {
     fun addTodo(title: String) {
         viewModelScope.launch {
             repository.addTodo(title)
-            repository.fetchTodos()
         }
     }
 }
