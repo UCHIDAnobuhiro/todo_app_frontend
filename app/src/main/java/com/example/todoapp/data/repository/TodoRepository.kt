@@ -2,7 +2,6 @@ package com.example.todoapp.data.repository
 
 import com.example.todoapp.data.model.Todo
 import com.example.todoapp.data.network.ApiClient
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -26,7 +25,6 @@ class TodoRepository {
         try {
             val newTodo = Todo(title = title, completed = false)
             api.addTodo(newTodo)
-            fetchTodos() // 追加後に再取得
         } catch (e: Exception) {
             e.printStackTrace()
         }
