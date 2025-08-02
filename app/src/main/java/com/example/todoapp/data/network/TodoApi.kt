@@ -10,5 +10,5 @@ interface TodoApi {
     suspend fun getTodos(): List<Todo>
 
     @POST("/todos")
-    suspend fun addTodo(@Body todo: Todo): Todo
+    suspend fun addTodo(@Body todo: Todo): Unit
 }

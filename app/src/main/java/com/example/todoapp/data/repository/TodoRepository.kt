@@ -25,6 +25,7 @@ class TodoRepository {
         try {
             val newTodo = Todo(title = title, completed = false)
             api.addTodo(newTodo)
+            _todos.value = api.getTodos()
         } catch (e: Exception) {
             e.printStackTrace()
         }
