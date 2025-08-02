@@ -25,4 +25,11 @@ class TodoViewModel : ViewModel() {
             repository.addTodo(title)
         }
     }
+
+    fun toggleCompleted(todo: Todo) {
+        viewModelScope.launch {
+            val updated = todo.copy(completed = !todo.completed)
+            repository.updateTodo(updated)
+        }
+    }
 }
