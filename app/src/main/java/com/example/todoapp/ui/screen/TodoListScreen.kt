@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextDecoration
 import com.example.todoapp.viewmodel.TodoViewModel
@@ -47,6 +48,9 @@ fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
                         style = MaterialTheme.typography.bodyLarge.copy(
                             textDecoration = if (todo.completed) TextDecoration.LineThrough else TextDecoration.None
                         ))
+                    IconButton(onClick = { viewModel.deleteTodo(todo) }) {
+                        Icon(Icons.Default.Delete, contentDescription = "削除")
+                    }
                 }
             }
         }

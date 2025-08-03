@@ -43,4 +43,14 @@ class TodoRepository {
         }
     }
 
+    suspend fun deleteTodo(todo: Todo) {
+        try {
+            api.deleteTodo(todo.id)
+            val updatedTodos = api.getTodos()
+            _todos.value = updatedTodos
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }
