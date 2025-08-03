@@ -18,6 +18,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.todoapp.viewmodel.TodoViewModel
 
+/**
+ * Todoの一覧を表示する画面。
+ *
+ * - チェックボックスで完了状態を切り替え可能。
+ * - ゴミ箱アイコンでTodoの削除が可能。
+ * - FAB（＋ボタン）から新規作成画面へ遷移。
+ *
+ * @param navController 画面遷移を制御するためのNavController。
+ * @param viewModel Todoの状態管理を行うViewModel。
+ */
 @Composable
 fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
     val todos by viewModel.todos.collectAsState()
@@ -37,6 +47,7 @@ fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
                         .padding(4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // チェックボックスで完了状態を切り替え
                     Checkbox(
                         checked = todo.completed,
                         onCheckedChange = {
@@ -44,6 +55,7 @@ fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
                         }
                     )
                     Spacer(Modifier.width(8.dp))
+                    // タイトル表示（完了状態で取り消し線）
                     Text(
                         todo.title,
                         modifier = Modifier.weight(1f),
@@ -53,6 +65,7 @@ fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
                     )
+                    // 削除アイコン
                     IconButton(onClick = { viewModel.deleteTodo(todo) }) {
                         Icon(Icons.Default.Delete, contentDescription = "削除")
                     }

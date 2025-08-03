@@ -9,6 +9,15 @@ import androidx.navigation.NavController
 import com.example.todoapp.viewmodel.TodoViewModel
 
 
+/**
+ * Todoを新規作成する画面。
+ *
+ * ユーザーがタイトルを入力し、「追加」ボタンを押すと、
+ * Todoが作成され、前の画面（リスト）に戻る。
+ *
+ * @param navController ナビゲーション操作を行うためのコントローラ。
+ * @param viewModel Todoの状態を管理するViewModel。
+ */
 @Composable
 fun AddTodoScreen(navController: NavController, viewModel: TodoViewModel) {
     var title by remember { mutableStateOf("") }
