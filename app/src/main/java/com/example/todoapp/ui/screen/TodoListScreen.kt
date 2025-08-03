@@ -12,8 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.todoapp.viewmodel.TodoViewModel
 
 @Composable
@@ -44,9 +46,16 @@ fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
                     Spacer(Modifier.width(8.dp))
                     Text(
                         todo.title,
+                        modifier = Modifier.weight(1f),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             textDecoration = if (todo.completed) TextDecoration.LineThrough else TextDecoration.None
-                        ))
+                        ),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    IconButton(onClick = { viewModel.deleteTodo(todo) }) {
+                        Icon(Icons.Default.Delete, contentDescription = "削除")
+                    }
                 }
             }
         }

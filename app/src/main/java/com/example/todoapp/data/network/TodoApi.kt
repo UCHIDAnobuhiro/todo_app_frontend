@@ -3,6 +3,7 @@ package com.example.todoapp.data.network
 import com.example.todoapp.data.model.Todo
 import kotlinx.serialization.Serializable
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -20,4 +21,7 @@ interface TodoApi {
 
     @PUT("/todos/{id}")
     suspend fun updateTodo(@Path("id") id: Int, @Body todo: Todo): MessageResponse
+
+    @DELETE("/todos/{id}")
+    suspend fun deleteTodo(@Path("id") id: Int): MessageResponse
 }
