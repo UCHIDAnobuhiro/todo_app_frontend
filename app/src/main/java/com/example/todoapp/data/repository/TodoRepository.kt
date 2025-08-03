@@ -6,12 +6,24 @@ import com.example.todoapp.data.network.ApiClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * Todoのデータ管理を行うリポジトリクラス。
+ * APIとの通信を通じてデータの取得・追加・更新・削除を行い、
+ * Todoリストの状態をStateFlowとして保持・提供する。
+ */
 class TodoRepository {
     private val _todos = MutableStateFlow<List<Todo>>(emptyList())
+
+    /**
+     * Todoリストの最新状態を通知する読み取り専用のStateFlow。
+     */
     val todos: StateFlow<List<Todo>> = _todos
 
     private val api = ApiClient.todoApi
 
+    /**
+     * サーバーからTodo一覧を取得し、StateFlowを更新する。
+     */
     suspend fun fetchTodos() {
         try {
             val result = api.getTodos()
@@ -22,6 +34,11 @@ class TodoRepository {
         }
     }
 
+    /**
+     * 新しいTodoをサーバーに追加し、一覧を再取得する。
+     *
+     * @param title 追加するTodoのタイトル。
+     */
     suspend fun addTodo(title: String) {
         try {
             val newTodo = Todo(title = title, completed = false)
@@ -32,6 +49,11 @@ class TodoRepository {
         }
     }
 
+    /**
+     * 指定されたTodoを更新し、一覧を再取得する。
+     *
+     * @param todo 更新対象のTodoオブジェクト。
+     */
     suspend fun updateTodo(todo: Todo) {
         try {
             api.updateTodo(todo.id, todo)
@@ -43,6 +65,11 @@ class TodoRepository {
         }
     }
 
+    /**
+     * 指定されたTodoを削除し、一覧を再取得する。
+     *
+     * @param todo 削除対象のTodoオブジェクト。
+     */
     suspend fun deleteTodo(todo: Todo) {
         try {
             api.deleteTodo(todo.id)
