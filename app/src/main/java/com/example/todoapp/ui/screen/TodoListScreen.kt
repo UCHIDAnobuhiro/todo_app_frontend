@@ -14,8 +14,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import com.example.todoapp.R
 import com.example.todoapp.ui.component.TodoListHeader
 import com.example.todoapp.viewmodel.TodoViewModel
 
@@ -39,7 +41,7 @@ fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate("add") }) {
-                Icon(Icons.Default.Add, contentDescription = "追加")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_task_btn_text))
             }
         }
     ) { paddingValues ->
@@ -71,7 +73,7 @@ fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
                     )
                     // 削除アイコン
                     IconButton(onClick = { viewModel.deleteTodo(todo) }) {
-                        Icon(Icons.Default.Delete, contentDescription = "削除")
+                        Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.delete_task_btn_text))
                     }
                 }
             }

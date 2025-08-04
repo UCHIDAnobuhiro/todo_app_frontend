@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.todoapp.R
 import com.example.todoapp.ui.component.AddTodoHeader
 import com.example.todoapp.viewmodel.TodoViewModel
 
@@ -36,7 +38,7 @@ fun AddTodoScreen(navController: NavController, viewModel: TodoViewModel) {
             TextField(
                 value = title,
                 onValueChange = { title = it },
-                label = { Text("新しいTodo") }
+                label = { Text(stringResource(R.string.add_task_label_text)) }
             )
             Spacer(Modifier.height(16.dp))
             Button(onClick = {
@@ -45,7 +47,7 @@ fun AddTodoScreen(navController: NavController, viewModel: TodoViewModel) {
                     navController.popBackStack()
                 }
             }) {
-                Text("追加")
+                Text(stringResource(R.string.add_task_btn_text))
             }
         }
     }

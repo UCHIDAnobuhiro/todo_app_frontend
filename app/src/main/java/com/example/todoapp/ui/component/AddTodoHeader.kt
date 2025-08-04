@@ -8,15 +8,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.example.todoapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTodoHeader(onBack: () -> Unit) {
     TopAppBar(
-        title = { Text("タスクを追加") },
+        title = { Text(stringResource(R.string.add_task_header_text)) },
         navigationIcon = {
             IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "戻る")
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back_btn_text))
             }
         }
     )

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Todo App</string>
+    <string name="app_header_text">Todo リスト</string>
+    <string name="add_task_header_text">タスクを追加</string>
+    <string name="add_task_label_text">新しいTodo</string>
+    <string name="add_task_btn_text">追加</string>
+    <string name="delete_task_btn_text">削除</string>"
+    <string name="back_btn_text">戻る</string>
+    
 </resources>
