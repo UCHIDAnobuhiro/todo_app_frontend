@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.todoapp.ui.component.AddTodoHeader
 import com.example.todoapp.viewmodel.TodoViewModel
 
 
@@ -22,16 +23,30 @@ import com.example.todoapp.viewmodel.TodoViewModel
 fun AddTodoScreen(navController: NavController, viewModel: TodoViewModel) {
     var title by remember { mutableStateOf("") }
 
-    Column(Modifier.padding(16.dp)) {
-        TextField(value = title, onValueChange = { title = it }, label = { Text("新しいTodo") })
-        Spacer(Modifier.height(16.dp))
-        Button(onClick = {
-            if (title.isNotBlank()) {
-                viewModel.addTodo(title)
-                navController.popBackStack()
+    Scaffold(
+        topBar = { AddTodoHeader { navController.popBackStack()} }
+    ) {
+        paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp)
+        ) {
+            TextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text("新しいTodo") }
+            )
+            Spacer(Modifier.height(16.dp))
+            Button(onClick = {
+                if (title.isNotBlank()) {
+                    viewModel.addTodo(title)
+                    navController.popBackStack()
+                }
+            }) {
+                Text("追加")
             }
-        }) {
-            Text("追加")
         }
     }
 }

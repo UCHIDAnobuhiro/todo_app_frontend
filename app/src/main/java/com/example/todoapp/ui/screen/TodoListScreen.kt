@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import com.example.todoapp.ui.component.TodoListHeader
 import com.example.todoapp.viewmodel.TodoViewModel
 
 /**
@@ -33,6 +34,9 @@ fun TodoListScreen(navController: NavController, viewModel: TodoViewModel) {
     val todos by viewModel.todos.collectAsState()
 
     Scaffold(
+        topBar = {
+            TodoListHeader()
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate("add") }) {
                 Icon(Icons.Default.Add, contentDescription = "追加")
