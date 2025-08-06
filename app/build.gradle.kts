@@ -62,6 +62,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     // OkHttp
     implementation(libs.okhttp)
+    // ViewModelテスト関連
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

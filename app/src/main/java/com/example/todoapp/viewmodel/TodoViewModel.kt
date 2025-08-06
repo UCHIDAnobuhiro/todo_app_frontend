@@ -1,6 +1,5 @@
 package com.example.todoapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.model.Todo
@@ -14,15 +13,13 @@ import kotlinx.coroutines.launch
  * [TodoRepository] を通じてTodoの取得・追加・更新・削除を行い、
  * UIには [StateFlow] を通じてリアクティブに状態を提供する。
  */
-class TodoViewModel : ViewModel() {
-    private val repository = TodoRepository()
+class TodoViewModel (private val repository: TodoRepository = TodoRepository()) : ViewModel() {
 
     val todos: StateFlow<List<Todo>> = repository.todos
 
     init {
         // ViewModel生成時にTodo一覧を取得
         viewModelScope.launch {
-            Log.d("ViewModel", "fetchTodos called")
             repository.fetchTodos()
         }
     }
