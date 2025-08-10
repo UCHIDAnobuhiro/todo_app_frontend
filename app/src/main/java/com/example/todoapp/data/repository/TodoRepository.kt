@@ -3,6 +3,7 @@ package com.example.todoapp.data.repository
 import android.util.Log
 import com.example.todoapp.data.model.Todo
 import com.example.todoapp.data.network.ApiClient
+import com.example.todoapp.data.network.TodoApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
  * APIとの通信を通じてデータの取得・追加・更新・削除を行い、
  * Todoリストの状態をStateFlowとして保持・提供する。
  */
-class TodoRepository {
+class TodoRepository(private val api: TodoApi = ApiClient.todoApi) {
     private val _todos = MutableStateFlow<List<Todo>>(emptyList())
 
     /**
@@ -19,7 +20,6 @@ class TodoRepository {
      */
     val todos: StateFlow<List<Todo>> = _todos
 
-    private val api = ApiClient.todoApi
 
     /**
      * サーバーからTodo一覧を取得し、StateFlowを更新する。
