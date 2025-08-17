@@ -5,8 +5,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.todoapp.ui.screen.AddTodoScreen
+import com.example.todoapp.ui.screen.LoginScreen
 import com.example.todoapp.ui.screen.TodoListScreen
+import com.example.todoapp.viewmodel.AuthViewModel
 import com.example.todoapp.viewmodel.TodoViewModel
+
+object Routes {
+    const val Login = "login"
+    const val List = "list"
+    const val Add = "add"
+}
 
 /**
  * アプリ全体のナビゲーショングラフを定義するComposable。
@@ -18,15 +26,34 @@ import com.example.todoapp.viewmodel.TodoViewModel
  * - "add" : Todo追加画面 [AddTodoScreen]
  */
 @Composable
-fun AppNavGraph(viewModel: TodoViewModel) {
+fun AppNavGraph(
+    authViewModel: AuthViewModel,
+    todoViewModel: TodoViewModel
+) {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "list") {
-        composable("list") {
-            TodoListScreen(navController, viewModel)
+    NavHost(
+        navController = navController,
+        startDestination = Routes.Login
+    ) {
+        composable(Routes.Login) {
+            LoginScreen(
+                vm = authViewModel,
+                onLoggedIn = {
+                    // ログイン成功でTodo一覧画面に遷移し、戻るでログインに戻れないように消す
+                    navController.navigate(Routes.List) {
+                        popUpTo(Routes.Login) { inclusive = true }
+                        launchSingleTop = true
+                    }
+
+                }
+            )
         }
-        composable("add") {
-            AddTodoScreen(navController, viewModel)
+        composable(Routes.List) {
+            TodoListScreen(navController, todoViewModel)
+        }
+        composable(Routes.Add) {
+            AddTodoScreen(navController, todoViewModel)
         }
     }
 }
