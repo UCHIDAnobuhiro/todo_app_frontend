@@ -13,12 +13,21 @@ import kotlinx.coroutines.launch
  * [TodoRepository] を通じてTodoの取得・追加・更新・削除を行い、
  * UIには [StateFlow] を通じてリアクティブに状態を提供する。
  */
-class TodoViewModel (private val repository: TodoRepository = TodoRepository()) : ViewModel() {
+class TodoViewModel(private val repository: TodoRepository = TodoRepository()) : ViewModel() {
 
     val todos: StateFlow<List<Todo>> = repository.todos
 
-    init {
-        // ViewModel生成時にTodo一覧を取得
+//    init {
+//        // ViewModel生成時にTodo一覧を取得
+//        viewModelScope.launch {
+//            repository.fetchTodos()
+//        }
+//    }
+
+    /**
+     * Todo一覧を取得する。
+     */
+    fun fetchTodos() {
         viewModelScope.launch {
             repository.fetchTodos()
         }

@@ -39,6 +39,7 @@ fun AppNavGraph(
             LoginScreen(
                 vm = authViewModel,
                 onLoggedIn = {
+                    todoViewModel.fetchTodos()
                     // ログイン成功で一覧画面に遷移し、戻るでログインに戻れないように消す
                     navController.navigate(Routes.LIST) {
                         popUpTo(Routes.LOGIN) { inclusive = true }
