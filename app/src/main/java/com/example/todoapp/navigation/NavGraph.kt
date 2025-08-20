@@ -21,7 +21,7 @@ object Routes {
  * アプリ全体のナビゲーショングラフを定義するComposable。
  *
  * @param authViewModel ログイン認証の状態管理を行う [TodoViewModel]。
- * @param todoViewModel Todoデータの状態管理を行う [TodoViewModel]。
+ * @param todoViewModel リストデータの状態管理を行う [TodoViewModel]。
  *
  */
 @Composable
@@ -39,7 +39,7 @@ fun AppNavGraph(
             LoginScreen(
                 vm = authViewModel,
                 onLoggedIn = {
-                    // ログイン成功でTodo一覧画面に遷移し、戻るでログインに戻れないように消す
+                    // ログイン成功で一覧画面に遷移し、戻るでログインに戻れないように消す
                     navController.navigate(Routes.LIST) {
                         popUpTo(Routes.LOGIN) { inclusive = true }
                         launchSingleTop = true
