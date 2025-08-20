@@ -10,20 +10,19 @@ import com.example.todoapp.ui.screen.TodoListScreen
 import com.example.todoapp.viewmodel.AuthViewModel
 import com.example.todoapp.viewmodel.TodoViewModel
 
+// Routesは、画面遷移の識別子です。
 object Routes {
-    const val Login = "login"
-    const val List = "list"
-    const val Add = "add"
+    const val LOGIN = "login"
+    const val LIST = "list"
+    const val ADD = "add"
 }
 
 /**
  * アプリ全体のナビゲーショングラフを定義するComposable。
  *
- * @param viewModel Todoデータの状態管理を行う [TodoViewModel]。
+ * @param authViewModel ログイン認証の状態管理を行う [TodoViewModel]。
+ * @param todoViewModel Todoデータの状態管理を行う [TodoViewModel]。
  *
- * この関数では、以下の画面遷移を定義しています：
- * - "list": Todo一覧画面 [TodoListScreen]
- * - "add" : Todo追加画面 [AddTodoScreen]
  */
 @Composable
 fun AppNavGraph(
@@ -34,25 +33,25 @@ fun AppNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = Routes.Login
+        startDestination = Routes.LOGIN
     ) {
-        composable(Routes.Login) {
+        composable(Routes.LOGIN) {
             LoginScreen(
                 vm = authViewModel,
                 onLoggedIn = {
                     // ログイン成功でTodo一覧画面に遷移し、戻るでログインに戻れないように消す
-                    navController.navigate(Routes.List) {
-                        popUpTo(Routes.Login) { inclusive = true }
+                    navController.navigate(Routes.LIST) {
+                        popUpTo(Routes.LOGIN) { inclusive = true }
                         launchSingleTop = true
                     }
 
                 }
             )
         }
-        composable(Routes.List) {
+        composable(Routes.LIST) {
             TodoListScreen(navController, todoViewModel)
         }
-        composable(Routes.Add) {
+        composable(Routes.ADD) {
             AddTodoScreen(navController, todoViewModel)
         }
     }
