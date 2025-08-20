@@ -11,7 +11,6 @@ import com.example.todoapp.viewmodel.AuthViewModel
 import com.example.todoapp.viewmodel.TodoViewModel
 
 class MainActivity : ComponentActivity() {
-    private val viewModel = TodoViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
