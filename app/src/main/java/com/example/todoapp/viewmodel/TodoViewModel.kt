@@ -17,13 +17,6 @@ class TodoViewModel(private val repository: TodoRepository = TodoRepository()) :
 
     val todos: StateFlow<List<Todo>> = repository.todos
 
-//    init {
-//        // ViewModel生成時にTodo一覧を取得
-//        viewModelScope.launch {
-//            repository.fetchTodos()
-//        }
-//    }
-
     /**
      * Todo一覧を取得する。
      */
