@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 /**
  * ログインリクエストを表すデータクラス
  *
- * @property username ログインするユーザー名
+ * @property email ログインするユーザー名
  * @property password ログインするユーザーのパスワード
  */
 @Serializable
