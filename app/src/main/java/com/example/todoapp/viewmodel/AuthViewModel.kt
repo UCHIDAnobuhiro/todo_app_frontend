@@ -77,19 +77,8 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
     fun login() {
         val (email, password) = _ui.value.let { it.email to it.password }
 
-        //　validation
-        if (email.isBlank() || password.isBlank()) {
-            _ui.update { it.copy(error = "メールアドレスとパスワードを入力してください") }
-            return
-        }
-
-        if (!email.contains("@")) {
-            _ui.update { it.copy(error = "メールアドレスの形式が不正です") }
-            return
-        }
-
-        if (password.length < 8) {
-            _ui.update { it.copy(error = "パスワードは8文字以上") }
+        validate(email, password)?.let { msg ->
+            _ui.update { it.copy(error = msg) }
             return
         }
 
@@ -114,5 +103,18 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
                 _ui.update { it.copy(isLoading = false) }
             }
         }
+    }
+
+    /**
+     * validationチェック
+     *
+     * @param email 入力されたメールアドレス
+     * @param password 入力されたパスワード
+     */
+    private fun validate(email: String, password: String): String? = when {
+        email.isBlank() || password.isBlank() -> "メールアドレスとパスワードを入力してください"
+        !email.contains("@") -> "メールアドレスの形式が不正です"
+        password.length < 8 -> "パスワードは8文字以上"
+        else -> null
     }
 }
