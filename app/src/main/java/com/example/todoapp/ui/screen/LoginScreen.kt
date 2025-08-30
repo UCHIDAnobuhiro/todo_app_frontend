@@ -24,10 +24,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.todoapp.R
 import com.example.todoapp.viewmodel.AuthViewModel
 
 @Composable
@@ -48,13 +50,13 @@ fun LoginScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Text("ログイン", style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.login), style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(24.dp))
 
         OutlinedTextField(
             value = ui.email,
             onValueChange = vm::onEmailChange,
-            label = { Text("メールアドレス") },
+            label = { Text(stringResource(R.string.mail)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = Modifier.fillMaxWidth()
@@ -64,7 +66,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = ui.password,
             onValueChange = vm::onPasswordChange,
-            label = { Text("パスワード") },
+            label = { Text(stringResource(R.string.password)) },
             singleLine = true,
             visualTransformation = if (ui.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -75,7 +77,9 @@ fun LoginScreen(
                         } else {
                             Icons.Default.VisibilityOff
                         },
-                        contentDescription = if (ui.isPasswordVisible) "隠す" else "表示"
+                        contentDescription = if (ui.isPasswordVisible) stringResource(R.string.hide) else stringResource(
+                            R.string.show
+                        )
                     )
                 }
             },
@@ -98,7 +102,7 @@ fun LoginScreen(
                 strokeWidth = 2.dp,
                 modifier = Modifier.size(20.dp)
             )
-            else Text("ログイン")
+            else Text(stringResource(R.string.login))
         }
     }
 }
