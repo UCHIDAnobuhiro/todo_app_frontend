@@ -98,40 +98,20 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
             _ui.update { it.copy(isLoading = true, error = null, success = false) }
             try {
                 repo.login(email, password)
-                _ui.update { it.copy(isLoading = false, success = true) }
-            } catch (e: HttpException) {
-                Log.e("LoginVM", "http error", e)
-                _ui.update {
-                    it.copy(
-                        isLoading = false,
-                        error = if (e.code() == 401) "メールまたはパスワードが違います" else "HTTPエラー: ${e.code()}"
-                    )
-                }
-            } catch (e: IOException) {
-                // ネットワーク未到達（タイムアウト/UnknownHost 等）
-                Log.e("LoginVM", "io error", e)
-                _ui.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "通信エラー: ネットワークを確認してください"
-                    )
-                }
-            } catch (e: SerializationException) {
-                Log.e("LoginVM", "json error", e)
-                _ui.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "JSONエラー: レスポンス形式が不正です"
-                    )
-                }
+                _ui.update { it.copy(success = true) }
             } catch (e: Exception) {
-                Log.e("LoginVM", "unknown error", e)
-                _ui.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "不明なエラー: ${e.message}"
-                    )
+                val msg = when (e) {
+                    is HttpException ->
+                        if (e.code() == 401) "メールアドレスまたはパスワードが間違っています" else "HTTPエラー: ${e.code()}"
+
+                    is IOException -> "通信エラー: ネットワークを確認してください"
+                    is SerializationException -> "JSONエラー: レスポンス形式が不正です"
+                    else -> "不明なエラー: ${e.message}"
                 }
+                Log.e("LoginVM", "login error", e)
+                _ui.update { it.copy(error = msg) }
+            } finally {
+                _ui.update { it.copy(isLoading = false) }
             }
         }
     }
