@@ -6,5 +6,13 @@
     <string name="add_task_btn_text">追加</string>
     <string name="delete_task_btn_text">削除</string>"
     <string name="back_btn_text">戻る</string>
-    
+
+    <!--ログイン-->
+    <string name="login">ログイン</string>
+    <string name="password">パスワード</string>
+    <string name="hide">隠す</string>
+    <string name="show">表示</string>
+    <string name="mail">メールアドレス</string>
+    <string name="logout">ログアウト</string>
+
 </resources>

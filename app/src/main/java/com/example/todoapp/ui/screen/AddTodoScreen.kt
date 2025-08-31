@@ -1,8 +1,19 @@
 package com.example.todoapp.ui.screen
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -22,13 +33,17 @@ import com.example.todoapp.viewmodel.TodoViewModel
  * @param viewModel Todoの状態を管理するViewModel。
  */
 @Composable
-fun AddTodoScreen(navController: NavController, viewModel: TodoViewModel) {
+fun AddTodoScreen(navController: NavController, viewModel: TodoViewModel, onLogout: () -> Unit) {
     var title by remember { mutableStateOf("") }
 
     Scaffold(
-        topBar = { AddTodoHeader { navController.popBackStack()} }
-    ) {
-        paddingValues ->
+        topBar = {
+            AddTodoHeader(
+                onBack = { navController.popBackStack() },
+                onLogout = onLogout
+            )
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

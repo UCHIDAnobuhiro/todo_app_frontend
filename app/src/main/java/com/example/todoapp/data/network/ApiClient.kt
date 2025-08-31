@@ -1,9 +1,12 @@
 package com.example.todoapp.data.network
 
+import com.example.todoapp.data.auth.InMemoryTokenProvider
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 
 /**
@@ -14,6 +17,18 @@ import retrofit2.Retrofit
  */
 @OptIn(ExperimentalSerializationApi::class)
 object ApiClient {
+
+    // アプリ全体で共有する TokenProvider
+    val tokenProvider = InMemoryTokenProvider()
+
+    private val logging = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(AuthInterceptor(tokenProvider))
+        .addInterceptor(logging)
+        .build()
 
 
     /** エミュレータから見たローカルホストのIPアドレス */
@@ -34,6 +49,7 @@ object ApiClient {
      */
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .client(client)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
 
@@ -42,4 +58,10 @@ object ApiClient {
      * Retrofitを使用してインスタンスを作成
      */
     val todoApi: TodoApi = retrofit.create(TodoApi::class.java)
+
+    /**
+     * AuthApiのインスタンス
+     * Retrofitを使用してインスタンスを作成
+     */
+    val authApi: AuthApi = retrofit.create(AuthApi::class.java)
 }

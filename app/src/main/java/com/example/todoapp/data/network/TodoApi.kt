@@ -28,7 +28,7 @@ interface TodoApi {
      *
      * @return Todoのリスト。
      */
-    @GET("/todos")
+    @GET("todos")
     suspend fun getTodos(): List<Todo>
 
     /**
@@ -37,7 +37,7 @@ interface TodoApi {
      * @param todo 追加するTodoオブジェクト。
      * @return 操作結果を含む [MessageResponse]。
      */
-    @POST("/todos")
+    @POST("todos")
     suspend fun addTodo(@Body todo: Todo): MessageResponse
 
     /**
@@ -47,7 +47,7 @@ interface TodoApi {
      * @param todo 更新後のTodoオブジェクト。
      * @return 操作結果を含む [MessageResponse]。
      */
-    @PUT("/todos/{id}")
+    @PUT("todos/{id}")
     suspend fun updateTodo(@Path("id") id: Int, @Body todo: Todo): MessageResponse
 
     /**
@@ -56,6 +56,6 @@ interface TodoApi {
      * @param id 削除対象のTodoのID。
      * @return 操作結果を含む [MessageResponse]。
      */
-    @DELETE("/todos/{id}")
+    @DELETE("todos/{id}")
     suspend fun deleteTodo(@Path("id") id: Int): MessageResponse
 }
