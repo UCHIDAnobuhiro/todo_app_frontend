@@ -1,7 +1,7 @@
 package com.example.todoapp.ui.component
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,7 +19,7 @@ fun TodoListHeader(onLogout: () -> Unit) {
         actions = {
             IconButton(onClick = onLogout) {
                 Icon(
-                    Icons.Filled.ExitToApp,
+                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                     contentDescription = stringResource(R.string.logout)
                 )
             }
