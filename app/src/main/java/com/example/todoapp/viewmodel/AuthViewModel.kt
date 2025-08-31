@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.repository.AuthRepository
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerializationException
@@ -21,7 +23,6 @@ import java.io.IOException
  * @property isPasswordVisible パスワード表示/非表示フラグ
  * @property isLoading ログイン処理中かどうか
  * @property error エラーメッセージ（null の場合はエラーなし）
- * @property success ログイン成功フラグ
  */
 data class LoginUiState(
     val email: String = "",
@@ -29,7 +30,6 @@ data class LoginUiState(
     val isPasswordVisible: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
-    val success: Boolean = false
 )
 
 /**
@@ -44,6 +44,13 @@ data class LoginUiState(
 class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
     private val _ui = MutableStateFlow(LoginUiState())
     val ui: StateFlow<LoginUiState> = _ui
+
+    sealed interface UiEvent {
+        data object LoggedIn : UiEvent
+    }
+
+    private val _events = MutableSharedFlow<UiEvent>(replay = 0, extraBufferCapacity = 1)
+    val events = _events.asSharedFlow()
 
     /**
      * メールアドレス入力変更時に状態を更新する。
@@ -84,24 +91,22 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
 
         // 非同期でログイン処理
         viewModelScope.launch {
-            _ui.update { it.copy(isLoading = true, error = null, success = false) }
-            try {
-                repo.login(email, password)
-                _ui.update { it.copy(success = true) }
-            } catch (e: Exception) {
-                val msg = when (e) {
-                    is HttpException ->
-                        if (e.code() == 401) "メールアドレスまたはパスワードが間違っています" else "HTTPエラー: ${e.code()}"
+            _ui.update { it.copy(isLoading = true, error = null) }
+            runCatching { repo.login(email, password) }
+                .onSuccess { _events.emit(UiEvent.LoggedIn) }
+                .onFailure { e ->
+                    val msg = when (e) {
+                        is HttpException ->
+                            if (e.code() == 401) "メールアドレスまたはパスワードが間違っています" else "HTTPエラー: ${e.code()}"
 
-                    is IOException -> "通信エラー: ネットワークを確認してください"
-                    is SerializationException -> "JSONエラー: レスポンス形式が不正です"
-                    else -> "不明なエラー: ${e.message}"
+                        is IOException -> "通信エラー: ネットワークを確認してください"
+                        is SerializationException -> "JSONエラー: レスポンス形式が不正です"
+                        else -> "不明なエラー: ${e.message}"
+                    }
+                    Log.e("LoginVM", "login error", e)
+                    _ui.update { it.copy(error = msg) }
                 }
-                Log.e("LoginVM", "login error", e)
-                _ui.update { it.copy(error = msg) }
-            } finally {
-                _ui.update { it.copy(isLoading = false) }
-            }
+            _ui.update { it.copy(isLoading = false) }
         }
     }
 
@@ -116,5 +121,14 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
         !email.contains("@") -> "メールアドレスの形式が不正です"
         password.length < 8 -> "パスワードは8文字以上"
         else -> null
+    }
+
+    /**
+     * ログアウト処理を実行
+     */
+    fun logout() {
+        viewModelScope.launch {
+            repo.logout()
+        }
     }
 }

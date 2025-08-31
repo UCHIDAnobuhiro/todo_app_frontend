@@ -45,15 +45,33 @@ fun AppNavGraph(
                         popUpTo(Routes.LOGIN) { inclusive = true }
                         launchSingleTop = true
                     }
-
                 }
             )
         }
         composable(Routes.LIST) {
-            TodoListScreen(navController, todoViewModel)
+            TodoListScreen(
+                navController,
+                todoViewModel,
+                onLogout = {
+                    // ログアウト処理
+                    authViewModel.logout() // ← TokenStore削除とか
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(0) { inclusive = true } // backstack 全消し
+                    }
+                }
+            )
         }
         composable(Routes.ADD) {
-            AddTodoScreen(navController, todoViewModel)
+            AddTodoScreen(
+                navController,
+                todoViewModel,
+                onLogout = {
+                    authViewModel.logout()
+                    navController.navigate(Routes.LOGIN) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
         }
     }
 }

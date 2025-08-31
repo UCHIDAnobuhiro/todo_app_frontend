@@ -13,5 +13,6 @@
     <string name="hide">隠す</string>
     <string name="show">表示</string>
     <string name="mail">メールアドレス</string>
+    <string name="logout">ログアウト</string>
 
 </resources>

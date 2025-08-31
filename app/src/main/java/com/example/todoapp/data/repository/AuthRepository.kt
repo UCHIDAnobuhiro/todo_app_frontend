@@ -18,4 +18,9 @@ class AuthRepository(
         tokenStore.save(res.token)
         return res
     }
+
+    suspend fun logout() {
+        ApiClient.tokenProvider.clear()
+        tokenStore.clear()
+    }
 }

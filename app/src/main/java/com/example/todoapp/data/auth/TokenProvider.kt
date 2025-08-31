@@ -12,5 +12,9 @@ class InMemoryTokenProvider : TokenProvider {
         token = t
     }
 
+    fun clear() {
+        token = null
+    }
+
     override fun getToken(): String? = token
 }

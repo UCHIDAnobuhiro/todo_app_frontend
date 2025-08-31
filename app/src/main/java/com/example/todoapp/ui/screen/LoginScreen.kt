@@ -40,8 +40,12 @@ fun LoginScreen(
     val ui by vm.ui.collectAsState()
 
     // 成功時に画面遷移（1回だけ）
-    LaunchedEffect(ui.success) {
-        if (ui.success) onLoggedIn()
+    LaunchedEffect(Unit) {
+        vm.events.collect { event ->
+            if (event is AuthViewModel.UiEvent.LoggedIn) {
+                onLoggedIn()
+            }
+        }
     }
 
     Column(
