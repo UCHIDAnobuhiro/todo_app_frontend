@@ -82,6 +82,9 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
      * 成功/失敗に応じて [LoginUiState] を更新する。
      */
     fun login() {
+        // 連打防止
+        if (_ui.value.isLoading) return
+
         val (email, password) = _ui.value.let { it.email to it.password }
 
         validate(email, password)?.let { msg ->
