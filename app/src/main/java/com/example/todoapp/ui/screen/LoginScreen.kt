@@ -34,14 +34,14 @@ import com.example.todoapp.viewmodel.AuthViewModel
 
 @Composable
 fun LoginScreen(
-    vm: AuthViewModel,
+    viewModel: AuthViewModel,
     onLoggedIn: () -> Unit,
 ) {
-    val ui by vm.ui.collectAsState()
+    val ui by viewModel.ui.collectAsState()
 
     // 成功時に画面遷移（1回だけ）
     LaunchedEffect(Unit) {
-        vm.events.collect { event ->
+        viewModel.events.collect { event ->
             if (event is AuthViewModel.UiEvent.LoggedIn) {
                 onLoggedIn()
             }
@@ -59,7 +59,7 @@ fun LoginScreen(
 
         OutlinedTextField(
             value = ui.email,
-            onValueChange = vm::onEmailChange,
+            onValueChange = viewModel::onEmailChange,
             label = { Text(stringResource(R.string.mail)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -69,12 +69,12 @@ fun LoginScreen(
 
         OutlinedTextField(
             value = ui.password,
-            onValueChange = vm::onPasswordChange,
+            onValueChange = viewModel::onPasswordChange,
             label = { Text(stringResource(R.string.password)) },
             singleLine = true,
             visualTransformation = if (ui.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                IconButton(onClick = vm::togglePassword) {
+                IconButton(onClick = viewModel::togglePassword) {
                     Icon(
                         imageVector = if (ui.isPasswordVisible) {
                             Icons.Default.Visibility
@@ -98,7 +98,7 @@ fun LoginScreen(
         Spacer(Modifier.height(20.dp))
 
         Button(
-            onClick = vm::login,
+            onClick = viewModel::login,
             enabled = !ui.isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
