@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.repository.AuthRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,7 +43,11 @@ data class LoginUiState(
  *
  * @param repo 認証リポジトリ。ログインAPIを呼び出す責務を持つ。
  */
-class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
+class AuthViewModel(
+    private val repo: AuthRepository,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : ViewModel() {
+
     private val _ui = MutableStateFlow(LoginUiState())
     val ui: StateFlow<LoginUiState> = _ui
 
@@ -93,7 +99,7 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
         }
 
         // 非同期でログイン処理
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             _ui.update { it.copy(isLoading = true, error = null) }
             runCatching { repo.login(email, password) }
                 .onSuccess { _events.emit(UiEvent.LoggedIn) }
@@ -130,7 +136,7 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
      * ログアウト処理を実行
      */
     fun logout() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             repo.logout()
         }
     }
