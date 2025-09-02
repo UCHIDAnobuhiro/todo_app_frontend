@@ -12,7 +12,8 @@ class AuthViewModelFactory(private val context: Context) : ViewModelProvider.Fac
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val repo = AuthRepository(
             api = ApiClient.authApi,
-            tokenStore = TokenStore(context)
+            tokenStore = TokenStore(context),
+            tokenProvider = ApiClient.tokenProvider
         )
         @Suppress("UNCHECKED_CAST")
         return AuthViewModel(repo) as T
