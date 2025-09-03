@@ -1,6 +1,5 @@
 package com.example.todoapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todoapp.data.repository.AuthRepository
@@ -107,7 +106,6 @@ class AuthViewModel(private val repo: AuthRepository) : ViewModel() {
                         is SerializationException -> "JSONエラー: レスポンス形式が不正です"
                         else -> "不明なエラー: ${e.message}"
                     }
-                    Log.e("LoginVM", "login error", e)
                     _ui.update { it.copy(error = msg) }
                 }
             _ui.update { it.copy(isLoading = false) }
