@@ -1,7 +1,7 @@
-# Stock App (Kotlin / Jetpack Compose)
+# Todo App (Kotlin / Jetpack Compose)
 
-**株価表示アプリ** です。  
-Kotlin・Jetpack Compose・MVVM アーキテクチャを採用し、ログイン認証機能と株価の表示を実装しています。
+シンプルな **Todo 管理アプリ** です。 
+Kotlin・Jetpack Compose・MVVM アーキテクチャを採用し、ログイン認証機能とタスクの追加・一覧表示を実装しています。
 
 ---
 
